@@ -40,7 +40,7 @@ class PostManager extends Manager
 
 	public function getPost($id) 
 	{
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image FROM posts WHERE id = :id AND draft = 0');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE id = :id AND draft = 0');
 		$req->execute(array('id' => $id));
 		$post = new Post($req->fetch());
 
@@ -56,7 +56,7 @@ class PostManager extends Manager
 	{
 		$posts =[];
 
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image FROM posts WHERE draft = 0 ORDER BY dateCreation DESC');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 0 ORDER BY dateCreation DESC');
 		$req->execute();
 		
 		while ($datas = $req->fetch())
@@ -76,7 +76,7 @@ class PostManager extends Manager
 	{
 		$posts =[];
 
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image FROM posts WHERE draft = 0 ORDER BY dateCreation DESC LIMIT ' . ($pagePost - 1) * 5 . ', 5');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 0 ORDER BY dateCreation DESC LIMIT ' . ($pagePost - 1) * 5 . ', 5');
 		$req->execute();
 		
 		while ($datas = $req->fetch())
@@ -98,7 +98,7 @@ class PostManager extends Manager
 	{
 		$draftPosts =[];
 		
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image FROM posts WHERE draft = 1 ORDER BY dateCreation DESC');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 1 ORDER BY dateCreation DESC');
 		$req->execute();
 		while($datas = $req->fetch())
 		{
@@ -132,22 +132,24 @@ class PostManager extends Manager
 
 	public function addAsPost(Post $post) 
 	{
-		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, 0)');
+		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, alt, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 0)');
 		$req->execute(array(
 			'title'   => $post->_title,
 			'content' => $post->_content,
-			'image'   => $post->_image
+			'image'   => $post->_image,
+			'alt'	  => $post->_alt
 		));
 
 	}
 
 	public function addAsDraft(Post $post) 
 	{
-		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, 1)');
+		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 1)');
 		$req->execute(array(
 			'title'   => $post->_title,
 			'content' => $post->_content,
-			'image'   => $post->_image
+			'image'   => $post->_image,
+			'alt'	  => $post->_alt
 		));
 
 	}
@@ -162,12 +164,14 @@ class PostManager extends Manager
 
 	public function updatePost(Post $post) 
 	{
-		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, draft = 0) WHERE id = :id');
+		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = 0) WHERE id = :id');
 		$req->execute(array(
 			'title'   => $post->_title,
 			'content' => $post->_content,
 			'image'   => $post->_image,
+			'alt'	  => $post->_alt,
 			'id'      => $post->_id
+			
 		));
 	}
 
@@ -180,11 +184,12 @@ class PostManager extends Manager
 
 	public function updateDraft(Post $post) 
 	{
-		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, draft = 1) WHERE id = :id');
+		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = 1) WHERE id = :id');
 		$req->execute(array(
 			'title'   => $post->_title,
 			'content' => $post->_content,
 			'image'   => $post->_image,
+			'alt'	  => $post->_alt,
 			'id'      => $post->_id
 		));
 	}

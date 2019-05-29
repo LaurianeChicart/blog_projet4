@@ -14,6 +14,7 @@ class Post {
 	private  $_dateCreation;
 	private  $_dateModif;
 	private  $_image;
+	private  $_alt;
 	private  $_draft;
 
 
@@ -129,6 +130,15 @@ class Post {
 		return $this->_image;
 	}
 
+	/**
+	 * @access public
+	 * @return string
+	 */
+
+	public function alt() 
+	{
+		return $this->_alt;
+	}
 
 	/**
 	 * @access public
@@ -221,6 +231,20 @@ class Post {
 		if(is_string($image) && !empty($image))
 		{
 			$this->_image = $image;
+		}
+	}
+
+	/**
+	 * @access public
+	 * @param string $alt 
+	 * @return void
+	 */
+
+	public function setAlt($alt) 
+	{
+		if(is_string($alt) && !empty($alt))
+		{
+			$this->_alt = $alt;
 		}
 	}
 

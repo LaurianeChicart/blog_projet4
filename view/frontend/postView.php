@@ -9,11 +9,19 @@
 
 <?php	
 		}
+		if (empty($post->alt()))
+		{
+			$alt = 'Image d\'illustration du chapitre ' .$post->title();
+		}
+		else
+		{
+			$alt = $post->alt();
+		}
 ?>
 
 		</p>
-		<div class="text-center"><img src="assets/images/uploads/<?= $post->image() ?>" ></div>
-		<p> <?= htmlspecialchars($post->content()) ?></p>
+		<div class="text-center"><img src="assets/images/uploads/l<?= $post->image() ?>" alt="<?= $alt ?>" ></div>
+		<p> <?= $post->content() ?></p>
 
 </section>
 <section>

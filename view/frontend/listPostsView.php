@@ -14,10 +14,18 @@
 
 <?php	
 		}
+		if (empty($post->alt()))
+		{
+			$alt = 'Image d\'illustration du chapitre ' .$post->title();
+		}
+		else
+		{
+			$alt = $post->alt();
+		}
 ?>
 
 		</p>
-		<p class="text-center"><img src="assets/images/uploads/<?= $post->image() ?>" class="image"></p>
+		<p class="text-center"><img src="assets/images/uploads/m<?= $post->image() ?>" alt="<?= $alt ?>"class="image"></p>
 <?php
 		if(strlen($post->content()) <= 1000)
 		{
