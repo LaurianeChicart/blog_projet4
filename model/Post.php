@@ -12,7 +12,9 @@ class Post {
 	private  $_title;
 	private  $_content;
 	private  $_dateCreation;
+	private  $_dateCreationFormat;
 	private  $_dateModif;
+	private  $_dateModifFormat;
 	private  $_image;
 	private  $_alt;
 	private  $_draft;
@@ -108,6 +110,16 @@ class Post {
 		return $this->_dateCreation;
 	}
 
+	/**
+	 * @access public
+	 * @return string
+	 */
+
+	public function dateCreationFormat() 
+	{
+		return $this->_dateCreationFormat;
+	}
+
 
 	/**
 	 * @access public
@@ -119,6 +131,15 @@ class Post {
 		return $this->_dateModif;
 	}
 
+	/**
+	 * @access public
+	 * @return string
+	 */
+
+	public function dateModifFormat() 
+	{
+		return $this->_dateModifFormat;
+	}
 
 	/**
 	 * @access public
@@ -207,6 +228,17 @@ class Post {
 		$this->_dateCreation = $dateCreation;
 	}
 
+	/**
+	 * @access public
+	 * @param string $dateCreationFormat
+	 * @return void
+	 */
+
+	public function setDateCreationFormat($dateCreationFormat) 
+	{
+		$this->_dateCreationFormat = $dateCreationFormat;
+	}
+
 
 	/**
 	 * @access public
@@ -217,6 +249,17 @@ class Post {
 	public function setDateModif($dateModif) 
 	{
 		$this->_dateModif = $dateModif;
+	}
+
+	/**
+	 * @access public
+	 * @param string $dateModif 
+	 * @return void
+	 */
+
+	public function setDateModifFormat($dateModifFormat) 
+	{
+		$this->_dateModifFormat = $dateModifFormat;
 	}
 
 

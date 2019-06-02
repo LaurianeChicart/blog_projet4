@@ -5,7 +5,7 @@
  * written by KDO kdo@zpmag.com
  * @see        Manager
  */
-require_once('Manager.php');
+require_once('model/Manager.php');
 
 class IdenthificationManager extends Manager 
 {

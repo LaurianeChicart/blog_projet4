@@ -40,7 +40,7 @@ class PostManager extends Manager
 
 	public function getPost($id) 
 	{
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE id = :id AND draft = 0');
+		$req = $this->_db->prepare('SELECT id, title, content, dateCreation, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE id = :id');
 		$req->execute(array('id' => $id));
 		$post = new Post($req->fetch());
 
@@ -56,7 +56,7 @@ class PostManager extends Manager
 	{
 		$posts =[];
 
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 0 ORDER BY dateCreation DESC');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE draft IS NULL ORDER BY dateCreation DESC');
 		$req->execute();
 		
 		while ($datas = $req->fetch())
@@ -76,7 +76,7 @@ class PostManager extends Manager
 	{
 		$posts =[];
 
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 0 ORDER BY dateCreation DESC LIMIT ' . ($pagePost - 1) * 5 . ', 5');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE draft IS NULL ORDER BY dateCreation DESC LIMIT ' . ($pagePost - 1) * 5 . ', 5');
 		$req->execute();
 		
 		while ($datas = $req->fetch())
@@ -98,7 +98,7 @@ class PostManager extends Manager
 	{
 		$draftPosts =[];
 		
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreation, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModif, image, alt FROM posts WHERE draft = 1 ORDER BY dateCreation DESC');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE draft = 1 ORDER BY dateCreation DESC');
 		$req->execute();
 		while($datas = $req->fetch())
 		{
@@ -117,7 +117,7 @@ class PostManager extends Manager
 
 	public function countPosts() 
 	{
-		$req = $this->_db->query('SELECT COUNT(*) AS nbPosts FROM posts WHERE draft = 0');
+		$req = $this->_db->query('SELECT COUNT(*) AS nbPosts FROM posts WHERE draft = false');
 		$nbPosts = $req->fetch()['nbPosts'];
 		return $nbPosts;
 	}
@@ -132,27 +132,30 @@ class PostManager extends Manager
 
 	public function addAsPost(Post $post) 
 	{
-		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, alt, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 0)');
+		
+		$req = $this->_db->prepare('INSERT INTO posts (title, content, dateCreation, dateModif, image, alt, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, :draft)');
 		$req->execute(array(
-			'title'   => $post->_title,
-			'content' => $post->_content,
-			'image'   => $post->_image,
-			'alt'	  => $post->_alt
-		));
+			'title'   => $post->title(),
+			'content' => $post->content(),
+			'image'   => $post->image(),
+			'alt'	  => $post->alt(),
+			'draft'	  => $post->draft()
+		)) OR die (print_r ($req->errorInfo(), TRUE));
+		
 
 	}
 
-	public function addAsDraft(Post $post) 
-	{
-		$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 1)');
-		$req->execute(array(
-			'title'   => $post->_title,
-			'content' => $post->_content,
-			'image'   => $post->_image,
-			'alt'	  => $post->_alt
-		));
+	// public function addAsDraft(Post $post) 
+	// {
+	// 	$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 1)');
+	// 	$req->execute(array(
+	// 		'title'   => $post->title(),
+	// 		'content' => $post->content(),
+	// 		'image'   => $post->image(),
+	// 		'alt'	  => $post->alt()
+	// 	));
 
-	}
+	// }
 
 
 	/**
@@ -164,35 +167,60 @@ class PostManager extends Manager
 
 	public function updatePost(Post $post) 
 	{
-		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = 0) WHERE id = :id');
+		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateCreation = :dateCreation, dateModif = NOW(), image = :image, alt = :alt, draft = :draft WHERE id = :id');
 		$req->execute(array(
-			'title'   => $post->_title,
-			'content' => $post->_content,
-			'image'   => $post->_image,
-			'alt'	  => $post->_alt,
-			'id'      => $post->_id
+			'title'   		=> $post->title(),
+			'content' 		=> $post->content(),
+			'dateCreation' 	=> $post->dateCreation(), 
+			'image'   		=> $post->image(),
+			'alt'	  		=> $post->alt(),
+			'draft'	  		=> $post->draft(),
+			'id'      		=> $post->id()
 			
-		));
+		)) OR die (print_r ($req->errorInfo(), TRUE));
 	}
 
+	
 	/**
-	 * Mettre à jour un billet en brouillon.
+	 * Publier un brouillon
 	 * @access public
 	 * @param Post $post 
 	 * @return void
 	 */
 
-	public function updateDraft(Post $post) 
+	public function updateDraftToPost(Post $post) 
 	{
-		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = 1) WHERE id = :id');
+		$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateCreation = NOW(), dateModif = NULL, image = :image, alt = :alt, draft = :draft WHERE id = :id');
 		$req->execute(array(
-			'title'   => $post->_title,
-			'content' => $post->_content,
-			'image'   => $post->_image,
-			'alt'	  => $post->_alt,
-			'id'      => $post->_id
-		));
+			'title'   		=> $post->title(),
+			'content' 		=> $post->content(),
+			'image'   		=> $post->image(),
+			'alt'	  		=> $post->alt(),
+			'draft'	  		=> $post->draft(),
+			'id'      		=> $post->id()
+			
+		)) OR die (print_r ($req->errorInfo(), TRUE));
 	}
+
+	// /**
+	//  * Mettre à jour un billet en brouillon.
+	//  * @access public
+	//  * @param Post $post 
+	//  * @return void
+	//  */
+
+	// public function updateDraft(Post $post) 
+	// {
+	// 	$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = :draft WHERE id = :id');
+	// 	$req->execute(array(
+	// 		'title'   => $post->title(),
+	// 		'content' => $post->content(),
+	// 		'image'   => $post->image(),
+	// 		'alt'	  => $post->alt(),
+	// 		'draft'	  => true,
+	// 		'id'      => $post->id()
+	// 	));
+	// }
 
 
 	/**

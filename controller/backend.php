@@ -37,10 +37,10 @@ function showDashboard()
 	$postManager = new PostManager();
 	$posts = $postManager->getAllPostsList();
 	$draftPosts = $postManager->getDraftPostsList();
-
+	
 	$commentManager = new CommentManager();
 	$warnedComments = $commentManager->countWarnedComments();
-	
+
 	$dashboardView = new View('dashboardView');
 	$dashboardView->getViewBack(array('posts' => $posts), array('draftPosts' => $draftPosts), array('warnedComments' => $warnedComments));
 }
@@ -51,25 +51,33 @@ function showEditor()
 	$editPostView->getViewBack();
 }
 
-function addADraft($image, $title, $content, $alt)
+function addAPost($title, $content, $alt, $draft, $image)
 {
-	if !empty($image)
-	//ajouter image à upload
+	
+	if (!is_null($image['name']))
+	{	
+		$imageManager = New ImageManager();
+		$imageName = $imageManager->addImage($image);
+	}
+	else
+	{
+		$imageName = null;
+	}
+
 	$newPost = new Post(array(
-			'id'		=> $id,
 			'title'		=> $title,
 			'content'	=> $content,
-			'image'		=> $image['name'],
-			'alt' 		=> $alt
+			'image'		=> $imageName,
+			'alt' 		=> $alt,
+			'draft'		=> $draft
 		));
-	if
-	//ajouter image à upload
+	
 	$postManager = new PostManager();
-	$affectedLines = $postManager->updatePost($newPost);
+	$affectedLines = $postManager->addAsPost($newPost);
 
 	if ($affectedLines === false)
 	{
-		throw new Exception("Impossible de mettre à jour le post.");
+		throw new Exception("Impossible d'ajouter le brouillon.");
 	}
 	else
 	{
@@ -78,40 +86,120 @@ function addADraft($image, $title, $content, $alt)
 	
 }
 
-function addAPost($image, $title, $content, $alt)
+function backToEditor($title, $content, $alt, $message)
 {
-	header('Location:dashboard.html');
+	$newPost = new Post(array(
+			'title'		=> $title,
+			'content'	=> $content,
+			'alt' 		=> $alt
+		));
+
+	$editPostView = new View('editPostView');
+	$editPostView->getViewBack(array('newPost' => $newPost), array('message' => $message));
+}
+// function addAPost($title, $content, $alt, $image)
+// {
+	
+// 	$imageManager = New ImageManager();
+// 	$newImageName = $imageManager->addImage($image);
+
+// 	$newPost = new Post(array(
+// 			'title'		=> $title,
+// 			'content'	=> $content,
+// 			'image'		=> $newImageName,
+// 			'alt' 		=> $alt,
+// 			'draft'		=> false
+// 		));
+	
+// 	$postManager = new PostManager();
+// 	$affectedLines = $postManager->addAsPost($newPost);
+
+
+// 	if ($affectedLines === false)
+// 	{
+// 		throw new Exception("Impossible d'ajouter le brouillon.");
+// 	}
+// 	else
+// 	{
+// 		header('Location:dashboard.html');
+// 	}
+// }
+function showDraftInEditor($id)
+{
+	$postManager = new PostManager();
+	$post = $postManager->getPost($id); 
+
+	if (empty($post))
+	{
+		throw new Exception("Le brouillon demandé n'existe pas.");
+	}
+	else
+	{
+		$postView = new View('modifyDraftView');
+		$postView->getViewBack(array('post' => $post));
+	}
+
 }
 
 function showPostInEditor($id)
 {
+	$postManager = new PostManager();
+	$post = $postManager->getPost($id); 
 
-}
-
-function upadateAPost($id, $image, $title, $content, $alt, $formerImage)
-{
-	if !empty($image)
+	if (empty($post))
 	{
-		//renommer $image['name']
-		//rajouter image à uploads
-		//supprimer $formerImage d'uploads
-		$imageName = $image['name'];
+		throw new Exception("Le brouillon demandé n'existe pas.");
 	}
 	else
 	{
-		$imageName = $formerImage
+		$postView = new View('modifyPostView');
+		$postView->getViewBack(array('post' => $post));
 	}
+}
 
+function upadateAPost($id, $title, $content, $dateCreation, $alt, $draft, $formerImage, $image)
+{
+	if (empty($image['name']) && is_null($formerImage)) //pas d'image ni ancienne, ni nouvelle
+	{
+		$imageName = null;
+	}
+	elseif (empty($image['name']) && !is_null($formerImage))//on conserve l'image précédemment choisie
+	{
+		$imageName = $formerImage;
+	}
+	elseif (!empty($image['name']) && is_null($formerImage))//premier choix d'image pour modifier un brouillon
+	{
+		$imageManager = New ImageManager();
+		$imageName = $imageManager->addImage($image);
+	}
+	elseif(!empty($image['name']) && !is_null($formerImage))//on remplace l'image
+	{
+		$imageManager = New ImageManager();
+		$imageName = $imageManager->addImage($image);
+		$imageManager->deleteImage($formerImage);
+	}
+		
+	
 	$newPost = new Post(array(
-			'id'		=> $id,
-			'title'		=> $title,
-			'content'	=> $content,
-			'image'		=> $imageName,
-			'alt' 		=> $alt
+			'id'			=> $id,
+			'title'			=> $title,
+			'content'		=> $content,
+			'dateCreation'	=> $dateCreation,
+			'image'			=> $imageName,
+			'alt' 			=> $alt,
+			'draft'			=> $draft
 		));
 
 	$postManager = new PostManager();
-	$affectedLines = $postManager->updatePost($newPost);
+	if (is_null($dateCreation))
+	{
+		$affectedLines = $postManager->updateDraftToPost($newPost);
+	}
+	else
+	{
+		$affectedLines = $postManager->updatePost($newPost);
+	}
+
 
 	if ($affectedLines === false)
 	{
@@ -123,37 +211,98 @@ function upadateAPost($id, $image, $title, $content, $alt, $formerImage)
 	}
 }
 
+function backToEditorPost($title, $content, $alt, $dateCreation, $draft, $message, $image, $formerImage, $id)
+{
+	if (is_null($image) && is_null($formerImage)) //pas d'image ni ancienne, ni nouvelle
+	{
+		$imageName = null;
+	}
+	elseif (is_null($image) && !is_null($formerImage))//on conserve l'image précédemment choisie
+	{
+		$imageName = $formerImage;
+	}
+	else 
+	{
+		$imageName = $image['name'];
+	}
+	
+
+	$post = new Post(array(
+			'id'			=> $id,
+			'title'			=> $title,
+			'content'		=> $content,
+			'dateCreation'	=> $dateCreation,
+			'image'			=> $imageName,
+			'alt' 			=> $alt,
+			'draft'			=> $draft
+		));
+	if ($draft == true)
+	{
+		$editPostView = new View('modifyDraftView');
+	}
+	else
+	{
+		$editPostView = new View('modifyPostView');
+	}
+	
+	$editPostView->getViewBack(array('post' => $post), array('message' => $message), array('formerImage' => $formerImage));
+}
+
+
 function deleteAPost($id)
 {
+	$postManager = new PostManager();
+	$post = $postManager->getPost($id);
+
+	if (!is_null($post->image()))
+	{
+
+		$imageManager = New ImageManager();
+		$imageManager->deleteImage($post->image());
+	}
+
+	$postManager->deletePost($id);
+
+	$commentManager = new CommentManager();
+	$commentManager->deletePostCommentsList($id);
+
 	header('Location:dashboard.html');
-}
-
-function showDraftInEditor($id)
-{
-
-}
-
-function upadateADraft($id, $image, $title, $content, $alt, $formerImage)
-{
+	
 	
 }
 
-function draftToPost($id, $image, $title, $content, $alt, $formerImage)
-{
+// function upadateADraft($id, $image, $title, $content, $alt, $formerImage)
+// {
+	
+// }
 
-}
+// function draftToPost($id, $image, $title, $content, $alt, $formerImage)
+// {
+
+// }
+
 
 function showModerationInterface()
 {
+	$commentManager = new CommentManager();
+	$warnedComments = $commentManager->getWarnedCommentsList();
 
+	$moderateView = new View('moderateView');
+	$moderateView->getViewBack(array('warnedComments' => $warnedComments));
 }
 
 function removeWarning($idComment)
 {
+	$commentManager = new CommentManager();
+	$commentManager->deleteWarning($idComment);
 
+	header('Location:moderation.html');
 }
 
 function deleteAComment($idComment)
 {
+	$commentManager = new CommentManager();
+	$commentManager->deleteComment($idComment);
 
+	header('Location:moderation.html');
 }

@@ -5,12 +5,12 @@
 ?>
 	<div class="article"><a href="post.html&id=<?= $post->id() ?>">
 		<h4><?= htmlspecialchars($post->title()) ?></h4>
-		<p>Publié le <?= $post->dateCreation() ?>
+		<p>Publié le <?= $post->dateCreationFormat() ?>
 <?php
-		if (!is_null($post->dateModif()))
+		if (!is_null($post->dateModifFormat()))
 		{
 ?>
-		(modifié le <?= $post->dateModif() ?>) 
+		(modifié le <?= $post->dateModifFormat() ?>) 
 
 <?php	
 		}

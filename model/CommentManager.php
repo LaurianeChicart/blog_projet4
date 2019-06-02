@@ -92,7 +92,7 @@ class CommentManager extends Manager
 
 	public function deleteComment($id) 
 	{
-		$this->_db->exec('DELETE FROM comments WHERE id = ' . $id);
+		$this->_db->exec('DELETE FROM comments WHERE idComment = ' . $id);
 	}
 
 
@@ -136,7 +136,7 @@ class CommentManager extends Manager
 	{
 		$warnedComments = [];
 
-		$req = $this->_db->execute('SELECT idComment, postsId, author, content, DATE_FORMAT(dateCreation, "le %d/%m/%Y à %Hh%imin%ss") AS dateCreation, warning FROM comments WHERE warning > 0 ORDER BY warning DESC');
+		$req = $this->_db->query('SELECT idComment, postsId, author, content, DATE_FORMAT(dateCreation, "le %d/%m/%Y à %Hh%imin%ss") AS dateCreation, warning FROM comments WHERE warning > 0 ORDER BY warning DESC');
 		while($datas = $req->fetch())
 		{
 			$warnedComments[] = new Comment($datas);
@@ -162,5 +162,9 @@ class CommentManager extends Manager
 		));
 	}
 
+	public function deletePostCommentsList($idPost)
+	{
+		$this->_db->exec('DELETE FROM comments WHERE postsId = '. $idPost);
+	}
 
 }
