@@ -56,7 +56,7 @@ class PostManager extends Manager
 	{
 		$posts =[];
 
-		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE draft IS NULL ORDER BY dateCreation DESC');
+		$req = $this->_db->prepare('SELECT id, title, content, DATE_FORMAT(dateCreation, "%d/%m/%Y") AS dateCreationFormat, DATE_FORMAT(dateModif, "%d/%m/%Y") AS dateModifFormat, image, alt FROM posts WHERE draft IS NULL ORDER BY dateCreation');
 		$req->execute();
 		
 		while ($datas = $req->fetch())
@@ -117,7 +117,7 @@ class PostManager extends Manager
 
 	public function countPosts() 
 	{
-		$req = $this->_db->query('SELECT COUNT(*) AS nbPosts FROM posts WHERE draft = false');
+		$req = $this->_db->query('SELECT COUNT(*) AS nbPosts FROM posts WHERE draft IS NULL');
 		$nbPosts = $req->fetch()['nbPosts'];
 		return $nbPosts;
 	}

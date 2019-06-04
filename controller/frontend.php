@@ -6,6 +6,7 @@ function showBlog($pagePost) //page d'accueil du blog
 {
 	$postManager = new PostManager();
 	$posts = $postManager->getPostsList($pagePost); 
+	$allPosts = $postManager->getAllPostsList();
 	$nbPosts = $postManager->countPosts(); 
 	$commentManager = new CommentManager();
 
@@ -16,7 +17,7 @@ function showBlog($pagePost) //page d'accueil du blog
 	else
 	{
 		$blogView = new View('listPostsView');
-		$blogView->getViewFront(array('posts' => $posts), array('commentManager' => $commentManager), array('nbPosts' => $nbPosts));
+		$blogView->getViewFront(array('posts' => $posts), array('commentManager' => $commentManager), array('nbPosts' => $nbPosts), array('allPosts' => $allPosts));
 	}
 
 }

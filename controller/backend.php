@@ -172,7 +172,7 @@ function upadateAPost($id, $title, $content, $dateCreation, $alt, $draft, $forme
 		$imageManager = New ImageManager();
 		$imageName = $imageManager->addImage($image);
 	}
-	elseif(!empty($image['name']) && !is_null($formerImage))//on remplace l'image
+	elseif(!empty($image['name']) && !is_null($formerImage) && file_exists("assets/images/uploads/$post->image()"))//on remplace l'image
 	{
 		$imageManager = New ImageManager();
 		$imageName = $imageManager->addImage($image);
@@ -254,7 +254,7 @@ function deleteAPost($id)
 	$postManager = new PostManager();
 	$post = $postManager->getPost($id);
 
-	if (!is_null($post->image()))
+	if (!is_null($post->image()) AND file_exists("assets/images/uploads/$post->image()"))
 	{
 
 		$imageManager = New ImageManager();

@@ -53,7 +53,7 @@ class ImageManager
 
                 else
                 {
-                        $source = imagecreatefrompng($file.$imageName); // La photo est la source
+                        $source = imagecreatefromjpeg($file.$imageName); // La photo est la source
                         $width_source = imagesx($source);
                         $height_source = imagesy($source);
                         $destination = imagecreatetruecolor($width, $width * $height_source / $width_source); // On crée la miniature vide

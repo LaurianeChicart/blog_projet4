@@ -10,11 +10,12 @@ class View
 		$this->_template = $template;
 	}
 
-	public function getViewFront($params1 = array(), $params2 = array(), $params3 = array())
+	public function getViewFront($params1 = array(), $params2 = array(), $params3 = array(), $params4 = array())
 	{
 		extract($params1); //récupération des paramètres
 		extract($params2);
 		extract($params3);
+		extract($params4);
 		
 		$template = $this->_template;
 

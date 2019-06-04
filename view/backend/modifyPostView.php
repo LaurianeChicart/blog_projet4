@@ -1,49 +1,54 @@
 <?php $title = 'Modifier post';
 ?>
-
-<h3>Modifier post</h3>
+<section class="article bg-light container">
+	<h4>Modifier post</h4>
 <?php
 if(isset($message))
 {
 ?>
-	<p><?= $message ?></p>
+		<p class="alert alert-danger" role="alert"><?= $message ?></p>
 <?php
 }
 ?>
-<form method="post" enctype="multipart/form-data">
+	<form method="post" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="title">Titre</label><input type="text" name="title" required value="<?= $post->title() ?>" class="form-control">
+		</div>
+		<input type="hidden" name="draft" value="<?= $post->draft() ?>"/>
+		<input type="hidden" name="dateCreation" value="<?= $post->dateCreation() ?>"/>	
 
-	<label for="title">Titre</label><input type="text" name="title" required value="<?= $post->title() ?>">
-	<input type="hidden" name="draft" value="<?= $post->draft() ?>"/>
-	<input type="hidden" name="dateCreation" value="<?= $post->dateCreation() ?>"/>	
+		<textarea id="postTextarea" name="content" required class="form-control"><?= $post->content() ?></textarea><br>
+		<img src="assets/images/uploads/s<?= $post->image() ?>">
+		<div class="form-group">
+			<label for="image">Modifier l'image d'illustration </label> <br> <input type="file" name="image" accept="image/png, image/jpeg"/><span class="form-text text-muted">1Mo maximum</span>
+		</div>
+		
+		<input type="hidden" name="formerImage" value="<?= $post->image() ?>"/>
 
-	<textarea id="postTextarea" name="content" required><?= $post->content() ?></textarea>
-
-	<label for="image">Image d'illustration (1Mo maximum)</label><input type="file" name="image" accept="image/png, image/jpeg"/>
-
-	<img src="assets/images/uploads/s<?= $post->image() ?>">
-	<input type="hidden" name="formerImage" value="<?= $post->image() ?>"/>
-
-
+		<div class="form-group">
 <?php	
 
 if(!is_null($post->alt()))
 {
-?>
-		<label for="alt">Texte alternatif de l'image</label><input type="text" name="alt" value="<?= $post->alt() ?>" ><br>
+?>			
+			<label for="alt">Texte alternatif de l'image</label><input type="text" name="alt" value="<?= $post->alt() ?>" class="form-control">
 <?php
 }
 else
 {
 ?> 
-		<label for="alt">Texte alternatif de l'image</label><input type="text" name="alt" ><br>
+			<label for="alt">Texte alternatif de l'image</label><input type="text" name="alt" class="form-control">
 <?php	
 }
 ?>
-	   
-    <a href="dashboard.html"><button>Abandonner</button></a>
+		</div>
+		<div id="buttons" class="d-flex justify-content-end flex-wrap">
+		    <button class="btn bg-color1"><a href="dashboard.html" class="text-decoration-none text-white">Abandonner</a></button>
 
-	 <input type="submit" formaction="delete-post.html&id=<?= $post->id() ?>" value="Supprimer le post">
+			 <input type="submit" formaction="delete-post.html&id=<?= $post->id() ?>" value="Supprimer le post" class="btn bg-color1">
 
-    <input type="submit" formaction="update-post.html&id=<?= $post->id() ?>" value="Mettre à jour">
-</form>
+		    <input type="submit" formaction="update-post.html&id=<?= $post->id() ?>" value="Mettre à jour" class="btn bg-color1">
+		</div>
+	</form>
+</section>
 
