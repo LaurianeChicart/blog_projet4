@@ -4,7 +4,7 @@
 	foreach ($posts as $post):
 
 ?>
-		<div class="article bg-light"><a href="post.html&id=<?= $post->id() ?>" class="text-reset text-decoration-none">
+		<div class="article bg-light"><a href="post.html?id=<?= $post->id() ?>" class="text-reset text-decoration-none">
 			<h4><?= htmlspecialchars($post->title()) ?></h4>
 			<p>Publié le <?= $post->dateCreationFormat() ?>
 <?php
@@ -44,6 +44,7 @@
 		}
 ?>
 			<p class="text-justify"><?= $content ?>... </p>
+			<div class="d-flex justify-content-between align-items-baseline">
 <?php
 		$nbComments = $commentManager->countComments($post->id());
 		if ($nbComments <= 1)
@@ -59,6 +60,7 @@
 <?php
 		}
 ?>
+			<p class="btn btn-primary">Lire la suite</p></div>
 		</a></div>
 	</div>
 	
@@ -68,24 +70,69 @@
 	
 	<nav aria-label="Navigation comments">
 		<ul class="pagination justify-content-center">
-			<li class="page-item"><a class="page-link bg-light text-color1" href="#"><span aria-hidden="true">&laquo;</span></a></li>
+
 <?php
+if (isset($_GET['pagePost']))
+{
+    $pagePost = $_GET['pagePost'];
+   
+}
+else
+{
+    $pagePost = 1;
+}
+
+if ($pagePost == 1)
+{
+?>
+			<li class="page-item disabled"><a class="page-link bg-light" href="#" tabindex="-1"><span aria-hidden="true">&laquo;</span></a></li>
+<?php
+}
+else
+{
+	$previous = $pagePost - 1;
+?>
+			<li class="page-item"><a class="page-link bg-light" href="home.html?pagePost=<?= $previous ?>" tabindex="-1"><span aria-hidden="true">&laquo;</span></a></li>
+<?php
+}
 	if ($nbPosts % 5 === 0)
 	{
-		$nbPages = $nbPosts / 5;
+		$nbPages = $nbPosts % 5;
 	}
 	else
 	{
-		$nbPages = $nbPosts / 5 + 1;
+		$nbPages = $nbPosts % 5 + 1;
 	}
 	for ($i=1; $i <= $nbPages; $i++)
 	{
+		if($pagePost == $i)
+		{
 ?>
-			<li class="page-item"> <a class="page-link bg-light text-color1" href="home.html?pagePost=<?php echo $i ?>"><?php echo $i ?></a> </li>
+			<li class="page-item"> <a class="page-link text-decoration-none bg-primary text-white" href="home.html?pagePost=<?php echo $i ?>"><?php echo $i ?></a> </li>
+<?php
+		}
+		else
+		{
+?>
+			<li class="page-item"> <a class="page-link bg-light" href="home.html?pagePost=<?php echo $i ?>"><?php echo $i ?></a> </li>
+<?php
+		}
+	}
+	if ($pagePost == $nbPages)
+	{
+?>
+			<li class="page-item disabled"><a class="page-link bg-light"><span aria-hidden="true">&raquo;</span></a></li>
+<?php
+	}
+	else
+	{
+		$next = $pagePost + 1;
+?>
+			<li class="page-item"><a class="page-link bg-light" href="home.html?pagePost=<?= $next ?>"><span aria-hidden="true">&raquo;</span></a></li>
 <?php
 	}
 ?>
-			<li class="page-item"><a class="page-link bg-light text-color1" href="#"><span aria-hidden="true">&raquo;</span></a></li>
+
 		</ul>
 	</nav>
 
@@ -103,7 +150,7 @@
 <?php 
 	foreach ($allPosts as $allPost):
 ?>		
-			<li><a href="index.php?action=post&id=<?= $allPost->id() ?>" class="text-color1"><?= $allPost->title() ?>
+			<li><a href="index.php?action=post&id=<?= $allPost->id() ?>" rel="nofollow"><?= $allPost->title() ?>
 			</a></li>
 <?php 
 	endforeach;

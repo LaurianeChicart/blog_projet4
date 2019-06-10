@@ -36,10 +36,10 @@ class ImageManager
                 $file = $this->_uploadFile;
                 if ($extension == "png")
                 {
-                        $source = imagecreatefrompng($file.$imageName); // La photo est la source
+                        $source = imagecreatefrompng($file.$imageName); 
                         $width_source = imagesx($source);
                         $height_source = imagesy($source);
-                        $destination = imagecreatetruecolor($width, $width * $height_source / $width_source); // On crée la miniature vide
+                        $destination = imagecreatetruecolor($width, $width * $height_source / $width_source); 
 
                         $width_destination = imagesx($destination);
                         $height_destination = imagesy($destination);
@@ -53,10 +53,10 @@ class ImageManager
 
                 else
                 {
-                        $source = imagecreatefromjpeg($file.$imageName); // La photo est la source
+                        $source = imagecreatefromjpeg($file.$imageName); 
                         $width_source = imagesx($source);
                         $height_source = imagesy($source);
-                        $destination = imagecreatetruecolor($width, $width * $height_source / $width_source); // On crée la miniature vide
+                        $destination = imagecreatetruecolor($width, $width * $height_source / $width_source); 
 
                         
                         $width_destination = imagesx($destination);

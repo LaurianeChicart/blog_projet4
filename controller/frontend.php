@@ -12,7 +12,7 @@ function showBlog($pagePost) //page d'accueil du blog
 
 	if (empty($posts))
 	{
-		throw new Exception("Aucun article à afficher.");
+		throw new Exception("Aucun article à afficher sur cette page.");
 	}
 	else
 	{
@@ -30,10 +30,14 @@ function showPost($id, $pageCom) //page article
 	$comments = $commentManager->getCommentsList($id, $pageCom);
 	$nbComments = $commentManager->countComments($id);
 
-	if (empty($post))
+	if (is_null($post->id()))
 	{
 		throw new Exception("L'article demandé n'existe pas.");
 	}
+	// elseif(empty($comments) && $nbComments !=0)
+	// {
+	// 	throw new Exception("La page demandée n'existe pas.");
+	// }
 	else
 	{
 		$postView = new View('postView');
@@ -58,11 +62,12 @@ function editComment($id, $author, $content) //publier un commentaire
 	}
 	else
 	{
-		header('Location: post.html&id=' . $id);
+		header('Location: post.html&id=' . $id . '#com');
 	}
 }
 function  warnComment($id, $idComment, $warning) //signaler un commentaire 
 {
+	$_SESSION['warn' . $idComment] = $idComment;
 	$commentManager = new CommentManager();
 	$affectedLines = $commentManager->warnComment($warning, $idComment);
 	if ($affectedLines === false)
@@ -71,6 +76,37 @@ function  warnComment($id, $idComment, $warning) //signaler un commentaire
 	}
 	else
 	{
-		header('Location: post.html&id=' . $id);
+		header('Location: post.html&id=' . $id . '#com');
 	}
+}
+function contactPage() //afficher la page de contact
+{
+	$contactView = new View('contactView');
+	$contactView->getViewFront();
+}
+function backToContact($name, $mail, $subject, $message, $errorMessage)
+{
+	$contactView = new View('contactView');
+	$contactView->getViewFront(array('name' => $name), array('mail' => $mail), array('subject' => $subject), array('message' => $message), array('errorMessage' => $errorMessage));
+}
+function sendMail($name, $mail, $subject, $message)
+{
+	$message = '
+	<html>
+	<body>
+		<p>Mail de : <?= $name ?></p>
+		<p>Adresse mail : <?= $mail ?></p>
+		<p>Sujet : <?= $subject ?></p>
+		<p>Message : <br> <?= $message ?></p>
+	</body>
+	</html>';
+	 
+
+	// Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
+     $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=UTF-8" . "\r\n"; 
+	mail('chicartlauriane@gmail.com', $subject, $message, $headers);
+}
+function legalMentions() //afficher la page des mentions légales
+{
+	include('view\frontend\legalMentionsView.php');
 }

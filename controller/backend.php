@@ -29,7 +29,7 @@ function deconnection()
 {
 	$_SESSION = array();
 	session_destroy();
-	header('Location:connexion.html');
+	header('Location:connection.html');
 }
 
 function showDashboard()
@@ -97,33 +97,7 @@ function backToEditor($title, $content, $alt, $message)
 	$editPostView = new View('editPostView');
 	$editPostView->getViewBack(array('newPost' => $newPost), array('message' => $message));
 }
-// function addAPost($title, $content, $alt, $image)
-// {
-	
-// 	$imageManager = New ImageManager();
-// 	$newImageName = $imageManager->addImage($image);
 
-// 	$newPost = new Post(array(
-// 			'title'		=> $title,
-// 			'content'	=> $content,
-// 			'image'		=> $newImageName,
-// 			'alt' 		=> $alt,
-// 			'draft'		=> false
-// 		));
-	
-// 	$postManager = new PostManager();
-// 	$affectedLines = $postManager->addAsPost($newPost);
-
-
-// 	if ($affectedLines === false)
-// 	{
-// 		throw new Exception("Impossible d'ajouter le brouillon.");
-// 	}
-// 	else
-// 	{
-// 		header('Location:dashboard.html');
-// 	}
-// }
 function showDraftInEditor($id)
 {
 	$postManager = new PostManager();
@@ -172,7 +146,7 @@ function upadateAPost($id, $title, $content, $dateCreation, $alt, $draft, $forme
 		$imageManager = New ImageManager();
 		$imageName = $imageManager->addImage($image);
 	}
-	elseif(!empty($image['name']) && !is_null($formerImage) && file_exists("assets/images/uploads/$post->image()"))//on remplace l'image
+	elseif(!empty($image['name']) && !is_null($formerImage) && file_exists("assets/images/uploads/" . $formerImage))//on remplace l'image
 	{
 		$imageManager = New ImageManager();
 		$imageName = $imageManager->addImage($image);
@@ -270,16 +244,6 @@ function deleteAPost($id)
 	
 	
 }
-
-// function upadateADraft($id, $image, $title, $content, $alt, $formerImage)
-// {
-	
-// }
-
-// function draftToPost($id, $image, $title, $content, $alt, $formerImage)
-// {
-
-// }
 
 
 function showModerationInterface()

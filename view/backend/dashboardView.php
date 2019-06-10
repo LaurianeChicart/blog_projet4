@@ -4,17 +4,24 @@
 	<aside class="col-12 bg-light">
 		<a href="moderation.html" class="text-decoration-none text-reset">
 			<h3>Modération</h3>
+
 <?php
-if ($warnedComments <=1)
+if ($warnedComments == 0)
 {
 ?>
-			<p><?= $warnedComments ?> commentaire signalé</p>
+			<p>Pas de commentaire signalé actuellement</p>
+<?php
+}
+elseif ($warnedComments <=1)
+{
+?>
+			<p><span class="fas fa-exclamation-circle"></span> Commentaire signalé <span class="badge badge-pill bg-primary"><?= $warnedComments ?></span></p>
 <?php
 }
 else
 {
 ?>
-			<p><span class="fas fa-exclamation-circle"></span> Commentaires signalés <span class="badge badge-pill bg-color1"><?= $warnedComments ?></span></p>
+			<p><span class="fas fa-exclamation-circle"></span> Commentaires signalés <span class="badge badge-pill bg-primary"><?= $warnedComments ?></span></p>
 <?php
 }
 ?>
@@ -36,7 +43,7 @@ else
 <?php
 foreach ($draftPosts as $draftPost):
 ?>
-			<li><a href="modify-draft.html&id=<?= $draftPost->id() ?>" class="text-color1"><?= htmlspecialchars($draftPost->title()) ?></a> (<?= $draftPost->dateCreationFormat() ?>)</li>
+			<li><a href="modify-draft.html&id=<?= $draftPost->id() ?>"><?= htmlspecialchars($draftPost->title()) ?></a> (<?= $draftPost->dateCreationFormat() ?>)</li>
 <?php
 endforeach;
 }
@@ -52,9 +59,9 @@ endforeach;
 foreach ($posts as $post):
 ?>
 			<tr>
-				<td scope="row"><a href="index.php?action=post.html&id=<?= $post->id() ?>" target="_blank" class="text-color1"><?= htmlspecialchars($post->title()) ?></a></td>
+				<td><a href="index.php?action=post.html&id=<?= $post->id() ?>" target="_blank"><?= htmlspecialchars($post->title()) ?></a></td>
 				<td class="d-none d-sm-block">Publié le <?= $post->dateCreationFormat() ?></td>
-				<td><button class="btn bg-color1"><a href="modify-post.html&id=<?= $post->id() ?>" class="text-decoration-none text-white">Modifier</a></button></td>
+				<td><a href="modify-post.html&id=<?= $post->id() ?>" class="text-decoration-none btn btn-primary">Modifier</a></td>
 			</tr>
 <?php
 endforeach;

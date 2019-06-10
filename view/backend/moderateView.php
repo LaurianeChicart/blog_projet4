@@ -1,27 +1,46 @@
 <?php $title = 'Espace modération'; ?>
 <section class="article bg-light container">
-
 	<h4>Les signalements de commentaires</h4>
-	<table class="table table-hover table-sm table-responsive">
+<?php
+if (empty($warnedComments))
+{
+?>
+	<p>Aucun commentaire signalé actuellement.</p>
+<?php
+}
+else
+{
+?>
+	
+	<table class="table table-hover table-responsive">
 		<tr>
-		   <th scope="col">Commentaire <span class="badge badge-pill bg-color1">Signalements</span></th>
+		   <th scope="col">Commentaire <span class="badge badge-pill bg-primary">Signalements</span></th>
 		   <th scope="col"></th>
 		   <th scope="col" class="d-none d-sm-table-cell">Date</th>
 		   <th scope="col" class="d-none d-sm-table-cell">Auteur</th>
 		 </tr>
+
+
 <?php
-foreach ($warnedComments as $warnedComment):
+	foreach ($warnedComments as $warnedComment):
 ?>
 		<tr>
 			<td><a href="post.html&id=<?= $warnedComment->postsId() ?>" target="_blank" class="text-decoration-none text-reset"><?= htmlspecialchars($warnedComment->content()) ?></a></td>
-			<td><span class="badge badge-pill bg-color1"><?= $warnedComment->warning() ?></span></td>
+			<td><span class="badge badge-pill bg-primary"><?= $warnedComment->warning() ?></span></td>
 			<td class="d-none d-sm-table-cell"><?= $warnedComment->dateCreation() ?></td>
 			<td class="d-none d-sm-table-cell"><?= $warnedComment->author() ?></td>
-			<td id="buttonsCell"><button class="btn bg-color1 btn-sm"><a href="remove-warning.html&id=<?= $warnedComment->idComment() ?>" class="text-decoration-none text-white">Lever les signalements</a></button>
-				<button class="btn bg-color1 btn-sm"><a href="delete-comment.html&id=<?= $warnedComment->idComment() ?>" class="text-decoration-none text-white">Supprimer le commentaire</a></button></td>
+			<td id="buttonsCell">
+				<button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#dialog-modal" data-message="Etes-vous sûr de vouloir remettre le compteur de signalements à 0 pour ce commentaire ?" data-link="remove-warning.html" data-id="<?= $warnedComment->idComment() ?>">Lever les signalements </button>
+				<button class="btn btn-primary btn-sm"  data-toggle="modal" data-target="#dialog-modal" data-message="Etes-vous sûr de vouloir supprimer définitivement ce commentaire ?" data-link="delete-comment.html" data-id="<?= $warnedComment->idComment() ?>">Supprimer le commentaire</button>
+			</td>
 		</tr>
 <?php
-endforeach;
+	endforeach;
 ?>
 	</table>
+<?php
+}
+?>
 </section>
+
+   

@@ -57,18 +57,6 @@ class Post {
 
 	/**
 	 * @access public
-	 * @param  $ 
-	 * @return bool
-	 */
-
-	/*public function isValid() 
-	{
-		return !(empty($this->_title)) || !(empty($this->_content)) || !(empty($this->_image));
-	}*/
-
-
-	/**
-	 * @access public
 	 * @return int
 	 */
 

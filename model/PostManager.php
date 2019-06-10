@@ -140,23 +140,10 @@ class PostManager extends Manager
 			'image'   => $post->image(),
 			'alt'	  => $post->alt(),
 			'draft'	  => $post->draft()
-		)) OR die (print_r ($req->errorInfo(), TRUE));
+		));
 		
 
 	}
-
-	// public function addAsDraft(Post $post) 
-	// {
-	// 	$req = $this->_db->prepare('INSERT INTO posts(title, content, dateCreation, dateModif, image, draft) VALUES(:title, :content, NOW(), NULL, :image, :alt, 1)');
-	// 	$req->execute(array(
-	// 		'title'   => $post->title(),
-	// 		'content' => $post->content(),
-	// 		'image'   => $post->image(),
-	// 		'alt'	  => $post->alt()
-	// 	));
-
-	// }
-
 
 	/**
 	 * Mettre à jour un billet edité.
@@ -177,7 +164,7 @@ class PostManager extends Manager
 			'draft'	  		=> $post->draft(),
 			'id'      		=> $post->id()
 			
-		)) OR die (print_r ($req->errorInfo(), TRUE));
+		));
 	}
 
 	
@@ -199,30 +186,10 @@ class PostManager extends Manager
 			'draft'	  		=> $post->draft(),
 			'id'      		=> $post->id()
 			
-		)) OR die (print_r ($req->errorInfo(), TRUE));
+		));
 	}
 
-	// /**
-	//  * Mettre à jour un billet en brouillon.
-	//  * @access public
-	//  * @param Post $post 
-	//  * @return void
-	//  */
-
-	// public function updateDraft(Post $post) 
-	// {
-	// 	$req = $this->_db->prepare('UPDATE posts SET title = :title, content = :content, dateModif = NOW(), image = :image, alt = :alt, draft = :draft WHERE id = :id');
-	// 	$req->execute(array(
-	// 		'title'   => $post->title(),
-	// 		'content' => $post->content(),
-	// 		'image'   => $post->image(),
-	// 		'alt'	  => $post->alt(),
-	// 		'draft'	  => true,
-	// 		'id'      => $post->id()
-	// 	));
-	// }
-
-
+	
 	/**
 	 * Supprimer un billet
 	 * @access public
