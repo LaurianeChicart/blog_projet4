@@ -2,7 +2,7 @@
 
 function connectionInterface()
 {
-	include('view\backend\authentificationView.php');
+	include('view/backend/authentificationView.php');
 }
 
 function authentification($name, $password)

@@ -1,13 +1,14 @@
 <?php $title = 'Contact';
 ?>
-<section class="article bg-light container">
+<section id="contact" class="article bg-light container">
 	<h3>Me contacter</h3>
 	<form action="send-mail.html" method="post">
+	<p id="jsmessage"></p>
 <?php
 if(isset($errorMessage))
 {
 ?>
-			<p class="alert alert-danger" role="alert"><?= $errorMessage ?></p>
+			<p  class="alert alert-danger" role="alert"><?= $errorMessage ?></p>
 <?php
 }
 ?>
@@ -76,7 +77,7 @@ else
 ?>
 		</div>	
 		<div class="d-flex justify-content-end">
-			<button type="submit"class="btn btn-primary"><span class="fas fa-envelope"> </span> Envoyer</button>
+			<button type="submit" class="btn btn-primary"><span class="fas fa-envelope"> </span> Envoyer</button>
 		</div>
 		
 	</form>

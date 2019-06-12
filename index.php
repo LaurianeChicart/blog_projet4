@@ -482,6 +482,7 @@ try
 }
 catch(Exception $e) 
 { 
+	header("HTTP/1.0 404 Not Found");
     $errorMessage = $e->getMessage();
     require('view/frontend/errorView.php');
 }

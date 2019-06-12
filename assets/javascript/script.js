@@ -1,6 +1,5 @@
 $(".warnComment").click(function(e){
 	e.preventDefault();
-	console.log('a');
 	let $selection = $(this);
 	let url = $selection.attr('href');
 
@@ -12,6 +11,55 @@ $(".warnComment").click(function(e){
 		    alert(jqxhr.responseText);
 		}
 	});
+	  
+});
+
+$("#contact form").submit(function(e){
+	e.preventDefault();
+	window.scrollTo(0, 0);
+	let urlForm = 'send-mail.html';
+	let regexCourriel = /.+@.+\..+/;
+	
+    let nameForm = $("#contact form #name").val();
+    let mailForm = $("#contact form #mail").val();
+    let subjectForm = $("#contact form #subject").val();
+    let messageForm = $("#contact form #message").val();
+    $("#jsmessage" ).empty();
+    $("#jsmessage" ).removeClass();
+
+    if (nameForm == ''){
+        $("#jsmessage").text('Saisie du nom incorrecte');
+        $("#jsmessage").addClass("alert alert-danger");
+    }
+    else if(!regexCourriel.test(mailForm))
+    {
+    	$("#jsmessage").text('Saisie du mail incorrecte');
+        $("#jsmessage").addClass("alert alert-danger");
+    }
+    else if (subjectForm == '')
+    {
+    	$("#jsmessage").text('Saisie de l\'objet incorrecte');
+        $("#jsmessage").addClass("alert alert-danger");
+   	}
+    else if (messageForm == '')
+    {
+    	$("#jsmessage").text('Saisie du message incorrecte');
+        $("#jsmessage").addClass("alert alert-danger");
+    }
+    else
+    {
+    	
+    	$.ajax({
+    		method: "POST",
+    		url: urlForm,
+    		data: {name: nameForm, mail: mailForm, subject: subjectForm, message: messageForm}
+    	})
+			.done(function() {
+			   	$("#jsmessage").addClass("alert alert-primary");
+    			$("#jsmessage").replaceWith('<p class="alert alert-primary font-weight-bold" id="jsmessage"><span class="fas fa-check"> </span> Mail envoyé</p>');
+			});
+	}
+
 	  
 });
 

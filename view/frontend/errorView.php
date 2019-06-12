@@ -50,7 +50,7 @@ if (isset($_SESSION['name']))
 		</nav>
 
 		<section class="article bg-light jumbotron">
-			<h5 class="display-4">Error 404</h5>
+			<h5 class="display-4">Error 404 - Not Found</h5>
 			<hr class="my-4">
 			<div class="text-center">
 				<span class="alert alert-danger"><span class="fas fa-times"></span> <?php echo $errorMessage ?></span><br><br>
@@ -59,7 +59,7 @@ if (isset($_SESSION['name']))
 			</div>
 		</section>
 		<footer class="text-center">
-			<p>© 2019 Tous droits réservés</p>
+			<p>© 2019 - Jean Forteroche, Tous droits réservés</p>
 		</footer>
 <?php
 }
@@ -72,7 +72,7 @@ else
 		</header>
 
 		<section class="article bg-light jumbotron">
-			<h5 class="display-4">Error 404</h5>
+			<h5 class="display-4">Error 404 - Not Found</h5>
 			<hr class="my-4">
 			<div class="text-center">
 				<span class="alert alert-danger"><span class="fas fa-times"></span> <?php echo $errorMessage ?></span><br><br>
@@ -88,7 +88,7 @@ else
 				<li> <a href="#"><span class="fab fa-instagram bg-primary"></span></a> </li>
 			</ul>
 			<p><a href="contact.html" class="text-decoration-none" rel="nofollow">Me contacter</a> - <a href="legal.html" class="text-decoration-none" rel="nofollow">Mentions légales</a></p>
-			<p>© 2019 Tous droits réservés</p>
+			<p>© 2019 - Jean Forteroche, Tous droits réservés</p>
 		</footer>
 
 <?php

@@ -57,7 +57,7 @@
 			<li> <a href="#"><span class="fab fa-instagram btn-primary"></span></a> </li>
 		</ul>
 		<p><a href="contact.html" class="text-decoration-none">Me contacter</a> - <a href="legal.html" class="text-decoration-none">Mentions légales</a></p>
-		<p>© 2019 Tous droits réservés</p>
+		<p>© 2019 - Jean Forteroche, Tous droits réservés</p>
 	</footer>
 
 <!-- BOOTSTRAP JQUERY -->

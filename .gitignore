@@ -2,3 +2,7 @@
 .htaccess
 /assets/style/css/style.scss
 /assets/style/css/style.css.map
+assets/style/css/bootstrap-4.3.1
+assets/style/css/.sass-cache
+assets/javascript/jquery-3.4.1.min.js
+assets/images

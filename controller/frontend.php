@@ -34,10 +34,6 @@ function showPost($id, $pageCom) //page article
 	{
 		throw new Exception("L'article demandé n'existe pas.");
 	}
-	// elseif(empty($comments) && $nbComments !=0)
-	// {
-	// 	throw new Exception("La page demandée n'existe pas.");
-	// }
 	else
 	{
 		$postView = new View('postView');
@@ -91,22 +87,15 @@ function backToContact($name, $mail, $subject, $message, $errorMessage)
 }
 function sendMail($name, $mail, $subject, $message)
 {
-	$message = '
-	<html>
-	<body>
-		<p>Mail de : <?= $name ?></p>
-		<p>Adresse mail : <?= $mail ?></p>
-		<p>Sujet : <?= $subject ?></p>
-		<p>Message : <br> <?= $message ?></p>
-	</body>
-	</html>';
+	$message = "Mail de : " . $name . "<br>" . "Adresse mail : " .  $mail . "<br>" . "Sujet : " . $subject . "<br>" . "Message : " . "<br>" . $message;
 	 
 
 	// Pour envoyer un mail HTML, l'en-tête Content-type doit être défini
-     $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=UTF-8" . "\r\n"; 
+    $headers = "MIME-Version: 1.0" . "\r\n" . "Content-type: text/html; charset=UTF-8" . "\r\n"; 
 	mail('chicartlauriane@gmail.com', $subject, $message, $headers);
+  	header('Location: contact.html');
 }
 function legalMentions() //afficher la page des mentions légales
 {
-	include('view\frontend\legalMentionsView.php');
+	include('view/frontend/legalMentionsView.php');
 }

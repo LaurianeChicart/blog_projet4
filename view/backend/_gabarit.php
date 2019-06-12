@@ -64,7 +64,7 @@
 	</section>
 
 		<footer class="text-center">
-			<p>© 2019 Tous droits réservés</p>
+			<p>© 2019 - Jean Forteroche, Tous droits réservés</p>
 		</footer>
 
 
