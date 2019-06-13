@@ -243,7 +243,7 @@ try
                         }
                         
 
-                        if (isset($_POST['title']) && !empty($_POST['title']) && isset($_POST['content']) && !is_null($content) && !is_null($alt) && isset($_POST['dateCreation']) && !is_null($formerImage) && isset($_POST['formerImage']) && !empty($_POST['formerImage']))
+                        if (isset($_POST['title']) && !empty($_POST['title']) && isset($_POST['content']) && !is_null($content) && !is_null($alt) && isset($_POST['dateCreation']) && !is_null($_POST['formerImage']) && isset($_POST['formerImage']) && !empty($_POST['formerImage']))
                         {
                             if (isset($_FILES['image']) && !empty($_FILES['image']['name'])  && $_FILES['image']['error'] == 0) //remplacement d'image 
                             {
