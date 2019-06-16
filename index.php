@@ -81,18 +81,19 @@ try
         {
             if (isset($_POST['name']) && !empty($_POST['name']) && isset($_POST['mail']) && !empty($_POST['mail']) && isset($_POST['subject']) && !empty($_POST['subject']) && isset($_POST['message']) && !empty($_POST['message'])) 
             {
-                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", htmlspecialchars($_POST['mail'])))
+                $mail = strtolower(trim($_POST['mail']));
+                if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", htmlspecialchars($mail)))
                 {
-                        sendMail(htmlspecialchars($_POST['name']), htmlspecialchars($_POST['mail']), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']));
+                        sendMail(htmlspecialchars($_POST['name']), htmlspecialchars($mail), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']));
                 }
                 else
                 {
-                    backToContact(htmlspecialchars($_POST['name']), htmlspecialchars($_POST['mail']), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']), "Adresse e-mail incorrecte");
+                    backToContact(htmlspecialchars($_POST['name']), htmlspecialchars($mail), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']), "Adresse e-mail incorrecte");
                 }
             }
             else
             {
-                backToContact(htmlspecialchars($_POST['name']), htmlspecialchars($_POST['mail']), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']), "Merci de remplir tous les champs du formulaire");
+                backToContact(htmlspecialchars($_POST['name']), htmlspecialchars($mail), htmlspecialchars($_POST['subject']), htmlspecialchars($_POST['message']), "Merci de remplir tous les champs du formulaire");
             }
             
         }

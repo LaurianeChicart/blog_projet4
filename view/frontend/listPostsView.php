@@ -4,7 +4,7 @@
 	foreach ($posts as $post):
 
 ?>
-		<div class="article bg-light"><a href="post.html?id=<?= $post->id() ?>" class="text-reset text-decoration-none">
+		<div class="article bg-light">
 			<h4><?= htmlspecialchars($post->title()) ?></h4>
 			<p>Publié le <?= $post->dateCreationFormat() ?>
 <?php
@@ -32,7 +32,7 @@
 ?>
 
 		
-			<p class="text-center"><img src="assets/images/uploads/m<?= $post->image() ?>" alt="<?= $alt ?>" class="image"></p>
+			<p class="text-center"><a href="post.html?id=<?= $post->id() ?>" class="text-reset text-decoration-none"><img src="assets/images/uploads/m<?= $post->image() ?>" alt="<?= $alt ?>" class="image"></a></p>
 <?php
 		if(strlen($post->content()) <= 1000)
 		{
@@ -60,8 +60,8 @@
 <?php
 		}
 ?>
-			<p class="btn btn-primary">Lire la suite</p></div>
-		</a></div>
+			<p><button class="btn btn-primary" href="post.html?id=<?= $post->id() ?>">Lire la suite</button></p></div>
+		</div>
 	</div>
 	
 <?php 

@@ -92,7 +92,10 @@ class CommentManager extends Manager
 
 	public function deleteComment($id) 
 	{
-		$this->_db->exec('DELETE FROM comments WHERE idComment = ' . $id);
+		$req = $this->_db->prepare('DELETE FROM comments WHERE idComment = :idComment');
+		$req->execute(array(
+			'idComment' => $id
+		));
 	}
 
 
@@ -164,7 +167,10 @@ class CommentManager extends Manager
 
 	public function deletePostCommentsList($idPost)
 	{
-		$this->_db->exec('DELETE FROM comments WHERE postsId = '. $idPost);
+		$req = $this->_db->prepare('DELETE FROM comments WHERE postsId = :idPost');
+		$req->execute(array(
+			'idPost' => $idPost
+		));
 	}
 
 }
