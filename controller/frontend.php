@@ -78,7 +78,7 @@ function  warnComment($id, $idComment, $warning) //signaler un commentaire
 function contactPage() //afficher la page de contact
 {
 	$contactView = new View('contactView');
-	$contactView->getViewFront();
+	$contactView->getViewFront(array('title' => 'Contact'));
 }
 function backToContact($name, $mail, $subject, $message, $errorMessage)
 {

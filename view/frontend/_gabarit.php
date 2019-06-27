@@ -5,7 +5,20 @@
 	
 	<!--viewport -->
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<?php
+ if (isset($title))
+ {
+?>
+ 	<title><?= $title ?> - Billet simple pour l'Alaska </title>
+<?php
+ }
+ else
+ {
+?>
 	<title>Billet simple pour l'Alaska</title>
+<?php
+ }
+?>
 
 	<!-- favicon-->
 	<link rel="icon" type="image/png" href="assets/images/images/imgholdr-image(15).png"/>

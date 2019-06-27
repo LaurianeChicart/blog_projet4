@@ -1,5 +1,3 @@
-<?php $title = 'Accueil'; ?>
-
 <section class="col-lg-4">
 	<aside class="col-12 bg-light">
 		<a href="moderation.html" class="text-decoration-none text-reset">

@@ -79,7 +79,9 @@ try
     //ENVOI DU MAIL
         elseif ($action == "send-mail.html") 
         {
-            if (isset($_POST['name']) && !empty($_POST['name']) && isset($_POST['mail']) && !empty($_POST['mail']) && isset($_POST['subject']) && !empty($_POST['subject']) && isset($_POST['message']) && !empty($_POST['message'])) 
+             elseif ($action == "send-mail.html") 
+        {
+            if (isset($_POST['name']) && !empty(trim($_POST['name'])) && isset($_POST['mail']) && !empty($_POST['mail']) && isset($_POST['subject']) && !empty(trim($_POST['subject'])) && isset($_POST['message']) && !empty(trim($_POST['message'])))
             {
                 $mail = strtolower(trim($_POST['mail']));
                 if (preg_match("#^[a-z0-9._-]+@[a-z0-9._-]{2,}\.[a-z]{2,4}$#", htmlspecialchars($mail)))

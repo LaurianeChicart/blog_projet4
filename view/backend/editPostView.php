@@ -1,5 +1,3 @@
-<?php $title = 'Publier un post';
-?>
 <section class="article bg-light container">
 	<h4>Ecrire un nouveau post</h4>
 <?php

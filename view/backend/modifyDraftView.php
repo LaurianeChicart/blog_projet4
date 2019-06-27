@@ -1,5 +1,3 @@
-<?php $title = 'Modifier brouillon';
-?>
 <section class="article bg-light container">
 	<h4>Modifier brouillon</h4>
 <?php

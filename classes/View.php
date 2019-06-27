@@ -27,11 +27,12 @@ class View
 		include_once('view/frontend/_gabarit.php');
 	}
 
-	public function getViewBack($params1 = array(), $params2 = array(), $params3 = array())
+	public function getViewBack($params1 = array(), $params2 = array(), $params3 = array(), $params4 = array())
 	{
 		extract($params1); 
 		extract($params2);
 		extract($params3);
+		extract($params4);
 
 		$template = $this->_template;
 

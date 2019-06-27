@@ -1,4 +1,3 @@
-<?php $title = 'Espace modération'; ?>
 <section class="article bg-light container">
 	<h4>Les signalements de commentaires</h4>
 <?php

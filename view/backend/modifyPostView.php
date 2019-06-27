@@ -1,5 +1,3 @@
-<?php $title = 'Modifier post';
-?>
 <section class="article bg-light container">
 	<h4>Modifier post</h4>
 <?php

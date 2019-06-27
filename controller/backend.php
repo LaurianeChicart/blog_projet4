@@ -42,13 +42,13 @@ function showDashboard()
 	$warnedComments = $commentManager->countWarnedComments();
 
 	$dashboardView = new View('dashboardView');
-	$dashboardView->getViewBack(array('posts' => $posts), array('draftPosts' => $draftPosts), array('warnedComments' => $warnedComments));
+	$dashboardView->getViewBack(array('posts' => $posts), array('draftPosts' => $draftPosts), array('warnedComments' => $warnedComments), array('title' => 'Accueil'));
 }
 
 function showEditor()
 {
 	$editPostView = new View('editPostView');
-	$editPostView->getViewBack();
+	$editPostView->getViewBack(array('title' => 'Publier un post'));
 }
 
 function addAPost($title, $content, $alt, $draft, $image)
@@ -95,7 +95,7 @@ function backToEditor($title, $content, $alt, $message)
 		));
 
 	$editPostView = new View('editPostView');
-	$editPostView->getViewBack(array('newPost' => $newPost), array('message' => $message));
+	$editPostView->getViewBack(array('newPost' => $newPost), array('message' => $message), array('title' => 'Publier un post'));
 }
 
 function showDraftInEditor($id)
@@ -110,7 +110,7 @@ function showDraftInEditor($id)
 	else
 	{
 		$postView = new View('modifyDraftView');
-		$postView->getViewBack(array('post' => $post));
+		$postView->getViewBack(array('post' => $post), array('title' => 'Modifier brouillon'));
 	}
 
 }
@@ -127,7 +127,7 @@ function showPostInEditor($id)
 	else
 	{
 		$postView = new View('modifyPostView');
-		$postView->getViewBack(array('post' => $post));
+		$postView->getViewBack(array('post' => $post), array('title' => 'Modifier post'));
 	}
 }
 
@@ -219,7 +219,7 @@ function backToEditorPost($title, $content, $alt, $dateCreation, $draft, $messag
 		$editPostView = new View('modifyPostView');
 	}
 	
-	$editPostView->getViewBack(array('post' => $post), array('message' => $message), array('formerImage' => $formerImage));
+	$editPostView->getViewBack(array('post' => $post), array('message' => $message), array('formerImage' => $formerImage), array('title' => 'Modifier post'));
 }
 
 
@@ -252,7 +252,7 @@ function showModerationInterface()
 	$warnedComments = $commentManager->getWarnedCommentsList();
 
 	$moderateView = new View('moderateView');
-	$moderateView->getViewBack(array('warnedComments' => $warnedComments));
+	$moderateView->getViewBack(array('warnedComments' => $warnedComments), array('title' => 'Espace modération'));
 }
 
 function removeWarning($idComment)

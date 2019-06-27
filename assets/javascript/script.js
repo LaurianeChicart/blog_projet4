@@ -27,7 +27,8 @@ $("#contact form").submit(function(e){
     $("#jsmessage" ).empty();
     $("#jsmessage" ).removeClass();
 
-    if (nameForm == ''){
+    if (nameForm.trim() === '')
+    {
         $("#jsmessage").text('Saisie du nom incorrecte');
         $("#jsmessage").addClass("alert alert-danger");
     }
@@ -36,12 +37,12 @@ $("#contact form").submit(function(e){
     	$("#jsmessage").text('Saisie du mail incorrecte');
         $("#jsmessage").addClass("alert alert-danger");
     }
-    else if (subjectForm == '')
+    else if (subjectForm.trim() === '')
     {
     	$("#jsmessage").text('Saisie de l\'objet incorrecte');
         $("#jsmessage").addClass("alert alert-danger");
    	}
-    else if (messageForm == '')
+    else if (messageForm.trim() === '')
     {
     	$("#jsmessage").text('Saisie du message incorrecte');
         $("#jsmessage").addClass("alert alert-danger");

@@ -1,5 +1,3 @@
-<?php $title = 'Contact';
-?>
 <section id="contact" class="article bg-light container">
 	<h3>Me contacter</h3>
 	<form action="send-mail.html" method="post">
